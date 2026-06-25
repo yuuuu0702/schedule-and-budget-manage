@@ -1,388 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP','Yu Gothic UI',sans-serif;}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
-.kb{padding:1.25rem 1rem 2rem;max-width:600px;margin:0 auto;}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>budget_management</title>
+</head>
 
-.kb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
-.kb-brand{display:flex;align-items:center;gap:10px;}
-.kb-icon{width:36px;height:36px;background:#1D9E75;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.kb-icon svg{width:19px;height:19px;}
-.kb-name{font-size:18px;font-weight:500;color:var(--color-text-primary);}
-.kb-pill{font-size:13px;color:var(--color-text-secondary);background:var(--color-background-secondary);border:1px solid var(--color-border-secondary);border-radius:99px;padding:5px 14px;}
+<body>
 
-.kb-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.25rem;}
-.kb-stat{background:var(--color-background-secondary);border-radius:14px;padding:16px 12px;}
-.kb-stat-l{font-size:12px;color:var(--color-text-tertiary);margin-bottom:6px;}
-.kb-stat-v{font-size:20px;font-weight:500;}
-.c-in{color:#0F6E56;}.c-ex{color:#993C1D;}.c-bp{color:#185FA5;}.c-bn{color:#A32D2D;}
+    <h1>budget_management</h1>
+    
 
-.kb-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:14px;overflow:hidden;border:1px solid var(--color-border-secondary);margin-bottom:1.25rem;}
-.kb-tab{padding:13px 4px;font-size:14px;font-weight:500;text-align:center;cursor:pointer;border:none;background:var(--color-background-secondary);color:var(--color-text-tertiary);border-right:1px solid var(--color-border-secondary);}
-.kb-tab:last-child{border-right:none;}
-.kb-tab.on-in{background:#E1F5EE;color:#085041;}
-.kb-tab.on-ex{background:#FAECE7;color:#712B13;}
-.kb-tab.on-ls{background:var(--color-background-primary);color:var(--color-text-primary);}
 
-.kb-panel{display:none;}
-.kb-panel.on{display:block;}
+    <!-- プロジェクト追加 -->
+    <h2>プロジェクト追加</h2>
 
-.kb-card{background:var(--color-background-primary);border:1px solid var(--color-border-secondary);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;}
-.kb-lbl{font-size:13px;font-weight:500;letter-spacing:.03em;color:var(--color-text-secondary);margin-bottom:8px;}
+    <input
+        type="text"
+        id="project-name"
+        placeholder="プロジェクト名">
 
-.kb-amt-wrap{position:relative;margin-bottom:16px;}
-.kb-yen{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:22px;font-weight:500;color:var(--color-text-secondary);pointer-events:none;z-index:1;}
-input.kb-amt{width:100%;padding:18px 16px 18px 42px;font-size:28px;font-weight:500;border:2px solid #555;border-radius:10px;background:var(--color-background-primary);color:var(--color-text-primary);outline:none;-moz-appearance:textfield;-webkit-appearance:none;appearance:none;font-family:inherit;}
-input.kb-amt::-webkit-inner-spin-button,input.kb-amt::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
-input.kb-amt:focus{border-color:#1D9E75;box-shadow:0 0 0 4px rgba(29,158,117,0.15);}
-input.kb-amt.ex:focus{border-color:#D85A30;box-shadow:0 0 0 4px rgba(216,90,48,0.15);}
+    <button onclick="addProject()">
+        プロジェクト追加
+    </button>
 
-input.kb-desc{width:100%;padding:14px 16px;font-size:16px;border:2px solid #555;border-radius:10px;background:var(--color-background-primary);color:var(--color-text-primary);outline:none;margin-bottom:14px;-webkit-appearance:none;appearance:none;font-family:inherit;}
-input.kb-desc:focus{border-color:#1D9E75;box-shadow:0 0 0 4px rgba(29,158,117,0.15);}
-input.kb-desc.ex:focus{border-color:#D85A30;box-shadow:0 0 0 4px rgba(216,90,48,0.15);}
+    <hr>
 
-select.kb-sel{width:100%;padding:14px 16px;font-size:16px;border:2px solid #555;border-radius:10px;background:var(--color-background-primary);color:var(--color-text-primary);outline:none;margin-bottom:14px;-webkit-appearance:none;appearance:none;font-family:inherit;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;}
+    <!-- プロジェクト一覧 -->
+    <h2>プロジェクト一覧</h2>
+    
+    <button onclick="loadProjects()">
+        更新
+    </button>
 
-.kb-status-wrap{margin-bottom:18px;}
-.kb-status-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
-.kb-status-btn{padding:10px 6px;font-size:14px;font-weight:500;border:2px solid #ccc;border-radius:10px;background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent;font-family:inherit;}
-.kb-status-btn.sel-plan{border-color:#378ADD;background:#E6F1FB;color:#0C447C;}
-.kb-status-btn.sel-done{border-color:#1D9E75;background:#E1F5EE;color:#085041;}
-.kb-status-btn.sel-cancel{border-color:#888780;background:#F1EFE8;color:#444441;}
 
-button.kb-submit{width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:500;cursor:pointer;letter-spacing:.02em;-webkit-tap-highlight-color:transparent;font-family:inherit;}
-button.kb-submit.in{background:#1D9E75;color:#fff;}
-button.kb-submit.in:active{background:#0F6E56;}
-button.kb-submit.ex{background:#D85A30;color:#fff;}
-button.kb-submit.ex:active{background:#993C1D;}
+    <ul id="project-list"></ul>
 
-.kb-filter-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
-.kb-filter-btn{padding:7px 14px;font-size:13px;font-weight:500;border:1.5px solid var(--color-border-secondary);border-radius:99px;background:transparent;color:var(--color-text-secondary);cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;}
-.kb-filter-btn.active{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary);}
+    <hr>
 
-.kb-sub{font-size:12px;font-weight:500;letter-spacing:.05em;color:var(--color-text-tertiary);margin-bottom:10px;}
-.kb-cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:1.25rem;}
-.kb-cat{background:var(--color-background-primary);border:1px solid var(--color-border-tertiary);border-radius:14px;padding:14px 16px;}
-.kb-cat-top{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
-.kb-cat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.kb-cat-nm{font-size:14px;color:var(--color-text-secondary);flex:1;}
-.kb-cat-pc{font-size:12px;color:var(--color-text-tertiary);}
-.kb-cat-v{font-size:20px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px;}
-.kb-bar-bg{height:4px;border-radius:99px;background:var(--color-background-secondary);}
-.kb-bar-fg{height:4px;border-radius:99px;}
+    <!-- 取引追加 -->
+    <h2>取引追加</h2>
 
-.kb-chart-card{background:var(--color-background-primary);border:1px solid var(--color-border-tertiary);border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;}
-.kb-chart-title{font-size:12px;font-weight:500;letter-spacing:.05em;color:var(--color-text-tertiary);margin-bottom:10px;}
-.kb-legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;}
-.kb-legend-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--color-text-secondary);}
-.kb-legend-sq{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
-.kb-chart-wrap{position:relative;width:100%;height:200px;}
+    <input
+        type="number"
+        id="amount"
+        placeholder="金額">
 
-.kb-rows{display:flex;flex-direction:column;gap:8px;}
-.kb-row{display:flex;align-items:center;gap:13px;background:var(--color-background-primary);border:1px solid var(--color-border-tertiary);border-radius:14px;padding:14px 16px;}
-.kb-row-ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;flex-shrink:0;}
-.kb-row-info{flex:1;min-width:0;}
-.kb-row-desc{font-size:15px;font-weight:500;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.kb-row-meta{display:flex;align-items:center;gap:6px;margin-top:3px;}
-.kb-row-cat{font-size:12px;color:var(--color-text-tertiary);}
-.kb-status-tag{font-size:11px;font-weight:500;padding:2px 8px;border-radius:99px;}
-.tag-plan{background:#E6F1FB;color:#0C447C;}
-.tag-done{background:#E1F5EE;color:#085041;}
-.tag-cancel{background:#F1EFE8;color:#444441;}
-.kb-row-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
-.kb-row-ain{font-size:15px;font-weight:500;color:#0F6E56;}
-.kb-row-aex{font-size:15px;font-weight:500;color:#993C1D;}
-.kb-del{background:none;border:none;cursor:pointer;color:var(--color-text-tertiary);font-size:20px;line-height:1;padding:0;-webkit-tap-highlight-color:transparent;}
-.kb-del:active{color:#D85A30;}
-.kb-empty{text-align:center;padding:3rem 0;font-size:15px;color:var(--color-text-tertiary);line-height:2.2;}
-.kb-save-msg{font-size:12px;color:#0F6E56;text-align:center;padding:6px 0;opacity:0;transition:opacity 0.3s;}
-.kb-save-msg.show{opacity:1;}
-</style>
+    <select id="transaction-type">
+        <option value="income">収入</option>
+        <option value="expense">支出</option>
+    </select>
 
-<h2 class="sr-only">家計簿アプリ — ステータス管理付きカテゴリ別収支管理</h2>
+    <input
+        type="text"
+        id="category"
+        placeholder="カテゴリ">
 
-<div class="kb">
-  <div class="kb-header">
-    <div class="kb-brand">
-      <div class="kb-icon">
-        <svg viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="10" width="3.5" height="6" rx="1.2" fill="white" opacity=".65"/>
-          <rect x="6.5" y="6" width="3.5" height="10" rx="1.2" fill="white" opacity=".82"/>
-          <rect x="12" y="2" width="3.5" height="14" rx="1.2" fill="white"/>
-        </svg>
-      </div>
-      <span class="kb-name">家計簿</span>
-    </div>
-    <span class="kb-pill" id="kb-date"></span>
-  </div>
+    <input
+        type="text"
+        id="memo"
+        placeholder="メモ">
 
-  <div class="kb-summary">
-    <div class="kb-stat"><div class="kb-stat-l">収入</div><div class="kb-stat-v c-in" id="s-in">¥0</div></div>
-    <div class="kb-stat"><div class="kb-stat-l">支出</div><div class="kb-stat-v c-ex" id="s-ex">¥0</div></div>
-    <div class="kb-stat"><div class="kb-stat-l">残高</div><div class="kb-stat-v c-bp" id="s-bal">¥0</div></div>
-  </div>
+    <button onclick="addTransaction()">
+        取引追加
+    </button>
 
-  <div class="kb-tabs">
-    <button class="kb-tab on-in" onclick="switchTab('income')">収入を追加</button>
-    <button class="kb-tab" onclick="switchTab('expense')">支出を追加</button>
-    <button class="kb-tab" onclick="switchTab('list')">明細一覧</button>
-  </div>
+    <hr>
 
-  <!-- 収入パネル -->
-  <div class="kb-panel on" id="panel-income">
-    <div class="kb-card">
-      <div class="kb-lbl">金額</div>
-      <div class="kb-amt-wrap">
-        <span class="kb-yen">¥</span>
-        <input class="kb-amt" type="number" id="in-amt" placeholder="0" min="0" step="100" inputmode="numeric"/>
-      </div>
-      <div class="kb-lbl">内容</div>
-      <input class="kb-desc" type="text" id="in-desc" placeholder="例：給与、ボーナス…"/>
-      <div class="kb-lbl">カテゴリ</div>
-      <select class="kb-sel" id="in-cat">
-        <option>給与</option><option>副業</option><option>ボーナス</option><option>その他</option>
-      </select>
-      <div class="kb-lbl">ステータス</div>
-      <div class="kb-status-wrap">
-        <div class="kb-status-row" id="in-status-row">
-          <button class="kb-status-btn sel-plan" onclick="setStatus('income','plan')">📅 予定</button>
-          <button class="kb-status-btn" onclick="setStatus('income','done')">✅ 完了</button>
-          <button class="kb-status-btn" onclick="setStatus('income','cancel')">— 取消</button>
-        </div>
-      </div>
-      <button class="kb-submit in" onclick="addEntry('income')">収入を記録する</button>
-    </div>
-    <div class="kb-sub">収入カテゴリ</div>
-    <div class="kb-cats" id="in-cats"></div>
-    <div class="kb-chart-card" id="in-chart-wrap" style="display:none;">
-      <div class="kb-chart-title">収入 カテゴリ別内訳</div>
-      <div class="kb-legend" id="in-legend"></div>
-      <div class="kb-chart-wrap"><canvas id="in-chart" role="img" aria-label="収入カテゴリ別棒グラフ"></canvas></div>
-    </div>
-  </div>
+    <!-- 取引一覧 -->
+    <h2>取引一覧</h2>
 
-  <!-- 支出パネル -->
-  <div class="kb-panel" id="panel-expense">
-    <div class="kb-card">
-      <div class="kb-lbl">金額</div>
-      <div class="kb-amt-wrap">
-        <span class="kb-yen">¥</span>
-        <input class="kb-amt ex" type="number" id="ex-amt" placeholder="0" min="0" step="100" inputmode="numeric"/>
-      </div>
-      <div class="kb-lbl">内容</div>
-      <input class="kb-desc ex" type="text" id="ex-desc" placeholder="例：スーパー、電気代…"/>
-      <div class="kb-lbl">カテゴリ</div>
-      <select class="kb-sel" id="ex-cat">
-        <option>食費</option><option>交通費</option><option>光熱費</option><option>住居費</option><option>娯楽</option><option>医療</option><option>その他</option>
-      </select>
-      <div class="kb-lbl">ステータス</div>
-      <div class="kb-status-wrap">
-        <div class="kb-status-row" id="ex-status-row">
-          <button class="kb-status-btn sel-plan" onclick="setStatus('expense','plan')">📅 予定</button>
-          <button class="kb-status-btn" onclick="setStatus('expense','done')">✅ 完了</button>
-          <button class="kb-status-btn" onclick="setStatus('expense','cancel')">— 取消</button>
-        </div>
-      </div>
-      <button class="kb-submit ex" onclick="addEntry('expense')">支出を記録する</button>
-    </div>
-    <div class="kb-sub">支出カテゴリ</div>
-    <div class="kb-cats" id="ex-cats"></div>
-    <div class="kb-chart-card" id="ex-chart-wrap" style="display:none;">
-      <div class="kb-chart-title">支出 カテゴリ別内訳</div>
-      <div class="kb-legend" id="ex-legend"></div>
-      <div class="kb-chart-wrap"><canvas id="ex-chart" role="img" aria-label="支出カテゴリ別棒グラフ"></canvas></div>
-    </div>
-  </div>
+    <button onclick="loadTransactions()">
+        取引一覧表示
+    </button>
 
-  <!-- 明細パネル -->
-  <div class="kb-panel" id="panel-list">
-    <div class="kb-filter-row">
-      <button class="kb-filter-btn active" onclick="setFilter('all')">すべて</button>
-      <button class="kb-filter-btn" onclick="setFilter('plan')">📅 予定</button>
-      <button class="kb-filter-btn" onclick="setFilter('done')">✅ 完了</button>
-      <button class="kb-filter-btn" onclick="setFilter('cancel')">— 取消</button>
-    </div>
-    <div class="kb-rows" id="kb-list"></div>
-  </div>
+    <ul id="transaction-list"></ul>
 
-  <div class="kb-save-msg" id="save-msg">保存しました</div>
-</div>
+    <hr>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script>
-const STORAGE_KEY='kakeibo_entries_v2';
-const CC={'給与':'#1D9E75','副業':'#5DCAA5','ボーナス':'#9FE1CB','食費':'#D85A30','交通費':'#EF9F27','光熱費':'#E24B4A','住居費':'#378ADD','娯楽':'#7F77DD','医療':'#D4537E','その他':'#888780'};
-const CB={'給与':'#E1F5EE','副業':'#E1F5EE','ボーナス':'#E1F5EE','食費':'#FAECE7','交通費':'#FAEEDA','光熱費':'#FCEBEB','住居費':'#E6F1FB','娯楽':'#EEEDFE','医療':'#FBEAF0','その他':'#F1EFE8'};
-const ABBR={'給与':'給','副業':'副','ボーナス':'賞','食費':'食','交通費':'交','光熱費':'光','住居費':'住','娯楽':'楽','医療':'医','その他':'他'};
-const STATUS_LABEL={plan:'予定',done:'完了',cancel:'取消'};
-const STATUS_CLS={plan:'tag-plan',done:'tag-done',cancel:'tag-cancel'};
+    <!-- 集計 -->
+    <h2>集計</h2>
 
-let entries=[];
-let nid=1;
-let charts={};
-let saveTimer=null;
-let selectedStatus={income:'plan',expense:'plan'};
-let currentFilter='all';
+    <button onclick="loadSummary()">
+        集計表示
+    </button>
 
-function loadData(){
-  try{
-    const raw=localStorage.getItem(STORAGE_KEY);
-    if(raw){
-      const p=JSON.parse(raw);
-      entries=p.entries||[];
-      nid=p.nid||(entries.length?Math.max(...entries.map(e=>e.id))+1:1);
-    }
-  }catch(e){entries=[];nid=1;}
-}
+    <div id="summary"></div>
 
-function saveData(){
-  try{
-    localStorage.setItem(STORAGE_KEY,JSON.stringify({entries,nid}));
-    const msg=document.getElementById('save-msg');
-    msg.classList.add('show');
-    if(saveTimer)clearTimeout(saveTimer);
-    saveTimer=setTimeout(()=>msg.classList.remove('show'),1800);
-  }catch(e){}
-}
+    <script>
 
-const fmt=n=>'¥'+Math.round(n).toLocaleString('ja-JP');
+        // 現在選択中のプロジェクトID
+        let currentProjectId = 0
 
-function switchTab(t){
-  ['income','expense','list'].forEach(x=>document.getElementById('panel-'+x).classList.toggle('on',x===t));
-  const tabs=document.querySelectorAll('.kb-tab');
-  tabs[0].className='kb-tab'+(t==='income'?' on-in':'');
-  tabs[1].className='kb-tab'+(t==='expense'?' on-ex':'');
-  tabs[2].className='kb-tab'+(t==='list'?' on-ls':'');
-}
+        // --------------------------
+        // プロジェクト一覧取得
+        // --------------------------
+        async function loadProjects() {
 
-function setStatus(type,status){
-  selectedStatus[type]=status;
-  const row=document.getElementById(type==='income'?'in-status-row':'ex-status-row');
-  const btns=row.querySelectorAll('.kb-status-btn');
-  const statuses=['plan','done','cancel'];
-  const selCls=['sel-plan','sel-done','sel-cancel'];
-  btns.forEach((btn,i)=>{
-    btn.className='kb-status-btn'+(statuses[i]===status?' '+selCls[i]:'');
-  });
-}
+            const response =
+                await fetch("/projects")
 
-function setFilter(f){
-  currentFilter=f;
-  document.querySelectorAll('.kb-filter-btn').forEach((btn,i)=>{
-    const filters=['all','plan','done','cancel'];
-    btn.classList.toggle('active',filters[i]===f);
-  });
-  renderList();
-}
+            const data =
+                await response.json()
 
-function addEntry(type){
-  const aId=type==='income'?'in-amt':'ex-amt';
-  const dId=type==='income'?'in-desc':'ex-desc';
-  const cId=type==='income'?'in-cat':'ex-cat';
-  const amt=parseFloat(document.getElementById(aId).value);
-  const desc=document.getElementById(dId).value.trim();
-  if(!desc||!amt||amt<=0)return;
-  entries.push({type,desc,amount:amt,cat:document.getElementById(cId).value,status:selectedStatus[type],id:nid++});
-  document.getElementById(aId).value='';
-  document.getElementById(dId).value='';
-  saveData();
-  render();
-}
+            console.log(data)
 
-function delEntry(id){
-  entries=entries.filter(e=>e.id!==id);
-  saveData();
-  render();
-}
+            const list =
+                document.getElementById("project-list")
 
-function toggleStatus(id){
-  const e=entries.find(e=>e.id===id);
-  if(!e)return;
-  const cycle={plan:'done',done:'cancel',cancel:'plan'};
-  e.status=cycle[e.status]||'plan';
-  saveData();
-  render();
-}
+            list.innerHTML = ""
 
-function makeCats(type,catsId,chartWrapperId,legendId,chartId){
-  const rel=entries.filter(e=>e.type===type);
-  const total=rel.reduce((s,e)=>s+e.amount,0);
-  const by={};
-  rel.forEach(e=>{by[e.cat]=(by[e.cat]||0)+e.amount;});
-  const pairs=Object.entries(by).sort((a,b)=>b[1]-a[1]);
-  const catsEl=document.getElementById(catsId);
-  if(!pairs.length){
-    catsEl.innerHTML='<div style="grid-column:span 2;font-size:14px;color:var(--color-text-tertiary);text-align:center;padding:2rem 0;">まだ記録がありません</div>';
-    document.getElementById(chartWrapperId).style.display='none';
-    return;
-  }
-  catsEl.innerHTML=pairs.map(([cat,amt])=>{
-    const pct=total>0?Math.round(amt/total*100):0;
-    const col=CC[cat]||'#888780';
-    return `<div class="kb-cat"><div class="kb-cat-top"><div class="kb-cat-dot" style="background:${col}"></div><span class="kb-cat-nm">${cat}</span><span class="kb-cat-pc">${pct}%</span></div><div class="kb-cat-v">${fmt(amt)}</div><div class="kb-bar-bg"><div class="kb-bar-fg" style="width:${pct}%;background:${col}"></div></div></div>`;
-  }).join('');
-  document.getElementById(chartWrapperId).style.display='block';
-  const labels=pairs.map(p=>p[0]);
-  const data=pairs.map(p=>p[1]);
-  const colors=labels.map(l=>CC[l]||'#888780');
-  document.getElementById(legendId).innerHTML=labels.map((l,i)=>`<span class="kb-legend-item"><span class="kb-legend-sq" style="background:${colors[i]}"></span>${l}</span>`).join('');
-  const ctx=document.getElementById(chartId);
-  if(charts[chartId])charts[chartId].destroy();
-  charts[chartId]=new Chart(ctx,{
-    type:'bar',
-    data:{labels,datasets:[{label:'金額',data,backgroundColor:colors,borderRadius:6,borderSkipped:false}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y)}}},scales:{x:{grid:{display:false},ticks:{color:'#888780',font:{size:12},autoSkip:false,maxRotation:0}},y:{grid:{color:'rgba(128,128,128,0.1)'},beginAtZero:true,ticks:{color:'#888780',font:{size:11},callback:v=>'¥'+(v>=10000?Math.round(v/1000)+'k':v)}}}}
-  });
-}
+            for (const [index, project] of data.entries()) {
 
-function renderList(){
-  const filtered=currentFilter==='all'?entries:entries.filter(e=>e.status===currentFilter);
-  const list=document.getElementById('kb-list');
-  if(!filtered.length){
-    list.innerHTML='<div class="kb-empty">該当する記録がありません</div>';
-    return;
-  }
-  list.innerHTML=[...filtered].reverse().map(e=>{
-    const isIn=e.type==='income';
-    const col=CC[e.cat]||'#888780';
-    const bg=CB[e.cat]||'#F1EFE8';
-    const ab=ABBR[e.cat]||'他';
-    const stCls=STATUS_CLS[e.status]||'tag-plan';
-    const stLbl=STATUS_LABEL[e.status]||'予定';
-    return `<div class="kb-row">
-      <div class="kb-row-ic" style="background:${bg};color:${col};">${ab}</div>
-      <div class="kb-row-info">
-        <div class="kb-row-desc">${e.desc}</div>
-        <div class="kb-row-meta">
-          <span class="kb-row-cat">${e.cat}</span>
-          <span class="kb-status-tag ${stCls}" onclick="toggleStatus(${e.id})" style="cursor:pointer;">${stLbl}</span>
-        </div>
-      </div>
-      <div class="kb-row-r">
-        <span class="${isIn?'kb-row-ain':'kb-row-aex'}">${isIn?'+':'-'}${fmt(e.amount)}</span>
-        <button class="kb-del" onclick="delEntry(${e.id})">×</button>
-      </div>
-    </div>`;
-  }).join('');
-}
+                const li =
+                    document.createElement("li")
 
-function render(){
-  const d=new Date();
-  document.getElementById('kb-date').textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月';
-  const inc=entries.filter(e=>e.type==='income').reduce((s,e)=>s+e.amount,0);
-  const exp=entries.filter(e=>e.type==='expense').reduce((s,e)=>s+e.amount,0);
-  const bal=inc-exp;
-  document.getElementById('s-in').textContent=fmt(inc);
-  document.getElementById('s-ex').textContent=fmt(exp);
-  const bEl=document.getElementById('s-bal');
-  bEl.textContent=fmt(Math.abs(bal));
-  bEl.className='kb-stat-v '+(bal>=0?'c-bp':'c-bn');
-  makeCats('income','in-cats','in-chart-wrap','in-legend','in-chart');
-  makeCats('expense','ex-cats','ex-chart-wrap','ex-legend','ex-chart');
-  renderList();
-}
+                li.textContent =
+                    `${index}: ${project.name}`
 
-loadData();
-render();
-</script>
+                li.onclick = function () {
+
+                    currentProjectId = index
+
+                    alert(
+                        project.name +
+                        " を選択しました"
+                    )
+                }
+
+                list.appendChild(li)
+            }
+        }
+
+        // --------------------------
+        // プロジェクト追加
+        // --------------------------
+        async function addProject() {
+
+            const name =
+                document.getElementById(
+                    "project-name"
+                ).value
+
+            if (name.trim() === "") {
+
+                alert(
+                    "プロジェクト名を入力してください"
+                )
+
+                return
+            }
+
+            const response =
+                await fetch(
+                    "/projects",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            name: name
+                        })
+                    }
+                )
+
+            if (!response.ok) {
+
+                alert(
+                    "プロジェクト作成に失敗しました"
+                )
+
+                return
+            }
+
+            document.getElementById(
+                "project-name"
+            ).value = ""
+
+            loadProjects()
+        }
+
+        // --------------------------
+        // 取引追加
+        // --------------------------
+        async function addTransaction() {
+
+            const amount =
+                Number(
+                    document.getElementById(
+                        "amount"
+                    ).value
+                )
+
+            const type =
+                document.getElementById(
+                    "transaction-type"
+                ).value
+
+            const category =
+                document.getElementById(
+                    "category"
+                ).value
+
+            const memo =
+                document.getElementById(
+                    "memo"
+                ).value
+
+            const today =
+                new Date()
+                    .toISOString()
+                    .split("T")[0]
+
+            const response =
+                await fetch(
+                    `/projects/${currentProjectId}/transactions`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            date: today,
+                            amount: amount,
+                            type: type,
+                            category: category,
+                            memo: memo
+                        })
+                    }
+                )
+
+            if (!response.ok) {
+
+                alert(
+                    "取引追加に失敗しました"
+                )
+
+                return
+            }
+
+            alert(
+                "取引を追加しました"
+            )
+
+            loadTransactions()
+        }
+
+        // --------------------------
+        // 取引一覧取得
+        // --------------------------
+        async function loadTransactions() {
+
+            const response =
+                await fetch(
+                    `/projects/${currentProjectId}/transactions`
+                )
+
+            const data =
+                await response.json()
+
+            const list =
+                document.getElementById(
+                    "transaction-list"
+                )
+
+            list.innerHTML = ""
+
+            for (const transaction of data) {
+
+                const li =
+                    document.createElement("li")
+
+                li.textContent =
+                    `${transaction.date} | ${transaction.type} | ${transaction.category} | ${transaction.amount}円 | ${transaction.memo}`
+
+                list.appendChild(li)
+            }
+        }
+
+        // --------------------------
+        // 集計取得
+        // --------------------------
+        async function loadSummary() {
+
+            const response =
+                await fetch(
+                    `/projects/${currentProjectId}/summary`
+                )
+
+            const data =
+                await response.json()
+
+            document.getElementById(
+                "summary"
+            ).innerHTML =
+                `
+                <p>収入: ${data.income}円</p>
+                <p>支出: ${data.expense}円</p>
+                <p>残高: ${data.balance}円</p>
+                `
+        }
+
+        // --------------------------
+        // ページ読込時
+        // --------------------------
+        window.onload =
+            loadProjects
+
+    </script>
+
+</body>
+
+</html>
